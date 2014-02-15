@@ -9,6 +9,8 @@ const int HOOK     = 11;
 const int BUZZER   = 10;
 const int LED      = 13;
 
+const int TOUCH2 = 9;
+
 // Other
 const float VD = 3.256;
 
@@ -62,6 +64,9 @@ void setup() {
   digitalWrite(HOOK, HIGH); 
   pinMode(TOUCH, INPUT);
 
+  pinMode(TOUCH2, INPUT);
+  digitalWrite(TOUCH2, HIGH); 
+
   pinMode(BUZZER, OUTPUT);
   pinMode(LED, OUTPUT);
 
@@ -73,18 +78,22 @@ void loop() {
   check_leaned();
   check_hooked();
 
+  check_touched_debug();
+
+  check_touched();
+
   // タイムアップ
   if (!is_success && 60 == time) {
     soundFailure();
   } 
   // 本番用
-  else if (is_leaned && is_hooked && is_touched1 && is_touched2 && is_touched3 && is_touched4) {
+  else if (!is_success && is_leaned && is_hooked && is_touched1 && is_touched2 && is_touched3 && is_touched4) {
     soundSuccess();
     soundSuccess();
     is_success = true;
   }
   // デバグ用
-//  else if (is_leaned && is_hooked && !is_success) {
+//  else if (!is_success && is_leaned && is_hooked) {
 //    soundSuccess();
 //    soundSuccess();
 //    is_success = true;
@@ -148,9 +157,42 @@ void check_hooked() {
   if (!is_hooked) {
     if (!digitalRead(HOOK)) {
   
+      // 傾いていた
+      if (is_leaned) {
+        result += 10;
+        soundCheckPoint();
+      }
+      
       // フックをつけた（加点）
       result += 10;
       is_hooked = true;
+      soundCheckPoint();
+    }
+  }
+}
+
+void check_touched_debug() {
+
+  if (!digitalRead(TOUCH2)) {
+
+    if (!is_touched1) {
+      result += 10;
+      is_touched1 = true;
+      soundCheckPoint();
+    }
+    else if (!is_touched2) {
+      result += 10;
+      is_touched2 = true;
+      soundCheckPoint();
+    }
+    else if (!is_touched3) {
+      result += 10;
+      is_touched3 = true;
+      soundCheckPoint();
+    }
+    else if (!is_touched4) {
+      result += 10;
+      is_touched4 = true;
       soundCheckPoint();
     }
   }
@@ -162,49 +204,52 @@ void check_touched() {
   if (!is_touched1 || !is_touched2 || !is_touched3 || !is_touched4) {
 
     int touchValue = analogRead(TOUCH);
+    
+    Serial.print("touchValue = ");
+    Serial.println(touchValue);
 
     // タッチした（抵抗３個）
     if (230 <= touchValue && touchValue < 280) {
 
       // タッチした（加点）
-      if (!is_touched1)
+      if (!is_touched1) {
         result += 10;
-
-      is_touched1 = true;
-      soundCheckPoint();
+        is_touched1 = true;
+        soundCheckPoint();
+      }
     }
 
     // タッチした（抵抗２個）
-    else if (500 <= touchValue && touchValue < 550) {
+    else if (530 <= touchValue && touchValue < 550) {
 
       // タッチした（加点）
-      if (!is_touched2)
+      if (!is_touched2) {
         result += 10;
-
-      is_touched2 = true;
-      soundCheckPoint();
+        is_touched2 = true;
+        soundCheckPoint();
+      }
     }
 
     // タッチした（抵抗１個）
     else if (750 <= touchValue && touchValue < 800) {
 
       // タッチした（加点）
-      if (!is_touched3)
+      if (!is_touched3) {
         result += 10;
-
-      is_touched3 = true;
-      soundCheckPoint();
+        is_touched3 = true;
+        soundCheckPoint();
+      }
     }
 
     // タッチした（抵抗０個）
-    else if (1000 <= touchValue) {
+    else if (950 <= touchValue) {
 
       // タッチした（加点）
-      if (!is_touched4)
+      if (!is_touched4) {
         result += 10;
-
-      is_touched4 = true;
-      soundCheckPoint();
+        is_touched4 = true;
+        soundCheckPoint();
+      }
     }
   }
 }
@@ -259,6 +304,7 @@ void soundCheckPoint() {
   if (result == 60) {
     beep(mG9,  100);
     beep(mB9,  100);
+    delay(500);
   }
 }
 
@@ -268,10 +314,10 @@ void soundSuccess() {
   beep(mF7, 100);
   beep(mF7, 100);
   beep(mF7, 75);
-  delay(125); 
-  beep(mEf7, 75); 
   delay(125);
-  beep(mG7, 75); 
+  beep(mEf7, 75);
+  delay(125);
+  beep(mG7, 75);
   delay(125);
   beep(mF7, 300);
   delay(500);
