@@ -231,7 +231,7 @@ void check_touched() {
     }
 
     // タッチした（抵抗１個）
-    else if (750 <= touchValue && touchValue < 800) {
+    else if (680 <= touchValue && touchValue < 720) {
 
       // タッチした（加点）
       if (!is_touched3) {
