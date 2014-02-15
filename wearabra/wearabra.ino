@@ -25,15 +25,19 @@ float time = 0;
 // for buzzer
 long t1, t2, t3, ta, tb;
 
-const int C   = 4186; // ド
-const int B   = 3951; // シ
-const int Bf  = 3729; // シb
-const int A   = 3520; // ラ
-const int G   = 3156; // ソ
-const int F   = 2794; // ファ
-const int Ef  = 2489; // ミb
+const int C8  = 4186; // ド
 
+const int B7  = 3951; // シ
+const int Bf7 = 3729; // シb
+const int A7_ = 3520; // ラ
+const int G7  = 3156; // ソ
+const int Fs7 = 2960; // ファ#
+const int F7  = 2794; // ファ
+const int Ef7 = 2489; // ミb
+const int E7  = 2637; // ミの周波数
+const int D7  = 2349; // レの周波数
 const int C7  = 2093; // ド
+
 const int B6  = 1976; // シ
 const int Bf6 = 1865; // シb
 const int Af6 = 1661; // ラb
@@ -66,6 +70,7 @@ void loop() {
     // 傾いた
     if (zg > 0) {
       is_leaned = true;
+      soundCheckPoint();
     }
   }
 
@@ -78,6 +83,7 @@ void loop() {
     }
 
     is_hooked = true;
+    soundCheckPoint();
   }
 
   // タッチしてなければ
@@ -94,6 +100,7 @@ void loop() {
       }
 
       is_touched1 = true;
+      soundCheckPoint();
 
     // タッチした（抵抗2個）
     } else if (500 <= touchValue && touchValue < 550) {
@@ -104,6 +111,7 @@ void loop() {
       }
 
       is_touched2 = true;
+      soundCheckPoint();
 
     // タッチした（抵抗1個）
     } else if (750 <= touchValue && touchValue < 800) {
@@ -114,6 +122,7 @@ void loop() {
       }
 
       is_touched3 = true;
+      soundCheckPoint();
 
     // タッチした（抵抗0個）
     } else if (1000 <= touchValue) {
@@ -124,6 +133,7 @@ void loop() {
       }
 
       is_touched4 = true;
+      soundCheckPoint();
     }
   }
 
@@ -132,8 +142,8 @@ void loop() {
     soundFailure();
 
   // 全部終わっていれば、点数を表示
-//  } else if (is_leaned && is_hooked && is_touched1 && is_touched2 && is_touched3 && is_touched4) { // 本番用
-  } else if (is_leaned && is_hooked) { // デバグ用
+  } else if (is_leaned && is_hooked && is_touched1 && is_touched2 && is_touched3 && is_touched4) { // 本番用
+//  } else if (is_leaned && is_hooked) { // デバグ用
     Serial.println(result);
     soundSuccess();
   }
@@ -161,20 +171,34 @@ void beep(int buzpin, int fre, long timel1) { // the sound producing
     delay(5);
 }
 
-void soundSuccess() {
-    beep(BUZZER, F, 100);
-    beep(BUZZER, F, 100);
-    beep(BUZZER, F, 100);
-    beep(BUZZER, F, 75);
-    delay(125); 
-    beep(BUZZER, Ef, 75); 
-    delay(125);
-    beep(BUZZER, G, 75); 
-    delay(125);
-    beep(BUZZER, F, 300);
-    delay(400);
+// チェックポイントで鳴らす音楽
+void soundCheckPoint() {
+    beep(BUZZER, C7, 100);
+    beep(BUZZER, D7, 100);
+    beep(BUZZER, Ef7, 200);
+    beep(BUZZER, Fs7, 100);
+    beep(BUZZER, G7, 100);
+    beep(BUZZER, A7_, 100);
+    beep(BUZZER, B7, 100);
+    delay(250);
 }
 
+// 時間内に成功したときに鳴らす音楽
+void soundSuccess() {
+    beep(BUZZER, F7, 100);
+    beep(BUZZER, F7, 100);
+    beep(BUZZER, F7, 100);
+    beep(BUZZER, F7, 75);
+    delay(125); 
+    beep(BUZZER, Ef7, 75); 
+    delay(125);
+    beep(BUZZER, G7, 75); 
+    delay(125);
+    beep(BUZZER, F7, 300);
+    delay(500);
+}
+
+// タイムアウトのときに鳴らす音楽
 void soundFailure() {
     beep(BUZZER, B5, 200);
     beep(BUZZER, B6, 200);
