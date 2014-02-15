@@ -20,6 +20,7 @@ boolean is_touched3 = false;
 boolean is_touched4 = false;
 
 int result = 100;
+float time = 0;
 
 // for buzzer
 long t1, t2, t3, ta, tb;
@@ -126,14 +127,20 @@ void loop() {
     }
   }
 
+  // タイムアップ
+  if (60 < time) {
+    soundFailure();
+
   // 全部終わっていれば、点数を表示
-//  if (is_leaned && is_hooked && is_touched1 && is_touched2 && is_touched3 && is_touched4) { // 本番用
-  if (is_leaned && is_hooked) { // デバグ用
+//  } else if (is_leaned && is_hooked && is_touched1 && is_touched2 && is_touched3 && is_touched4) { // 本番用
+  } else if (is_leaned && is_hooked) { // デバグ用
     Serial.println(result);
     soundSuccess();
   }
 
   delay(500);
+  time += 0.5;
+  Serial.println(time);
 }
 
 /**
