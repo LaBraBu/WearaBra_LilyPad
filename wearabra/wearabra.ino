@@ -101,9 +101,10 @@ void loop() {
 
       is_touched1 = true;
       soundCheckPoint();
+    }
 
     // タッチした（抵抗2個）
-    } else if (500 <= touchValue && touchValue < 550) {
+    else if (500 <= touchValue && touchValue < 550) {
 
       // 傾いてない or フックをつけてないのに、タッチした（減点）
       if (!is_touched2 && (!is_leaned || !is_hooked)) {
@@ -112,9 +113,10 @@ void loop() {
 
       is_touched2 = true;
       soundCheckPoint();
+    }
 
     // タッチした（抵抗1個）
-    } else if (750 <= touchValue && touchValue < 800) {
+    else if (750 <= touchValue && touchValue < 800) {
 
       // 傾いてない or フックをつけてないのに、タッチした（減点）
       if (!is_touched3 && (!is_leaned || !is_hooked)) {
@@ -123,9 +125,10 @@ void loop() {
 
       is_touched3 = true;
       soundCheckPoint();
+    }
 
     // タッチした（抵抗0個）
-    } else if (1000 <= touchValue) {
+    else if (1000 <= touchValue) {
 
       // 傾いてない or フックをつけてないのに、タッチした（減点）
       if (!is_touched4 && (!is_leaned || !is_hooked)) {
@@ -141,9 +144,10 @@ void loop() {
   if (60 < time) {
     soundFailure();
 
-  // 全部終わっていれば、点数を表示
-  } else if (is_leaned && is_hooked && is_touched1 && is_touched2 && is_touched3 && is_touched4) { // 本番用
-//  } else if (is_leaned && is_hooked) { // デバグ用
+    // 全部終わっていれば、点数を表示
+  } 
+  else if (is_leaned && is_hooked && is_touched1 && is_touched2 && is_touched3 && is_touched4) { // 本番用
+    //  } else if (is_leaned && is_hooked) { // デバグ用
     Serial.println(result);
     soundSuccess();
   }
@@ -159,71 +163,70 @@ void loop() {
  * @param long timel1 msec
  */
 void beep(int buzpin, int fre, long timel1) { // the sound producing 
-    int x; 
-    long delayHL = (long)(1000000/fre/2); 
-    long loopn   = (long)((timel1*1000)/(2*delayHL));
-    for (x=0;x<loopn;x++) {
-        digitalWrite(buzpin,HIGH); 
-        delayMicroseconds(delayHL); 
-        digitalWrite(buzpin,LOW); 
-        delayMicroseconds(delayHL);
-    }
-    delay(5);
+  int x; 
+  long delayHL = (long)(1000000/fre/2); 
+  long loopn   = (long)((timel1*1000)/(2*delayHL));
+  for (x=0;x<loopn;x++) {
+    digitalWrite(buzpin,HIGH); 
+    delayMicroseconds(delayHL); 
+    digitalWrite(buzpin,LOW); 
+    delayMicroseconds(delayHL);
+  }
+  delay(5);
 }
 
 // チェックポイントで鳴らす音楽
 void soundCheckPoint() {
-    beep(BUZZER, C7, 100);
-    beep(BUZZER, D7, 100);
-    beep(BUZZER, Ef7, 200);
-    beep(BUZZER, Fs7, 100);
-    beep(BUZZER, G7, 100);
-    beep(BUZZER, A7_, 100);
-    beep(BUZZER, B7, 100);
-    delay(250);
+  beep(BUZZER, C7, 100);
+  beep(BUZZER, D7, 100);
+  beep(BUZZER, Ef7, 200);
+  beep(BUZZER, Fs7, 100);
+  beep(BUZZER, G7, 100);
+  beep(BUZZER, A7_, 100);
+  beep(BUZZER, B7, 100);
+  delay(250);
 }
 
 // 時間内に成功したときに鳴らす音楽
 void soundSuccess() {
-    beep(BUZZER, F7, 100);
-    beep(BUZZER, F7, 100);
-    beep(BUZZER, F7, 100);
-    beep(BUZZER, F7, 75);
-    delay(125); 
-    beep(BUZZER, Ef7, 75); 
-    delay(125);
-    beep(BUZZER, G7, 75); 
-    delay(125);
-    beep(BUZZER, F7, 300);
-    delay(500);
+  beep(BUZZER, F7, 100);
+  beep(BUZZER, F7, 100);
+  beep(BUZZER, F7, 100);
+  beep(BUZZER, F7, 75);
+  delay(125); 
+  beep(BUZZER, Ef7, 75); 
+  delay(125);
+  beep(BUZZER, G7, 75); 
+  delay(125);
+  beep(BUZZER, F7, 300);
+  delay(500);
 }
 
 // タイムアウトのときに鳴らす音楽
 void soundFailure() {
-    beep(BUZZER, B5, 200);
-    beep(BUZZER, B6, 200);
-    beep(BUZZER, Bf5, 200);
-    beep(BUZZER, Bf6, 200);
+  beep(BUZZER, B5, 200);
+  beep(BUZZER, B6, 200);
+  beep(BUZZER, Bf5, 200);
+  beep(BUZZER, Bf6, 200);
 
-    beep(BUZZER, B5, 200);
-    beep(BUZZER, B6, 200);
-    beep(BUZZER, Bf5, 200);
-    beep(BUZZER, Bf6, 200);
+  beep(BUZZER, B5, 200);
+  beep(BUZZER, B6, 200);
+  beep(BUZZER, Bf5, 200);
+  beep(BUZZER, Bf6, 200);
 
-    beep(BUZZER, B5, 200);
-    beep(BUZZER, B6, 200);
-    beep(BUZZER, Bf5, 200);
-    beep(BUZZER, Bf6, 200);
+  beep(BUZZER, B5, 200);
+  beep(BUZZER, B6, 200);
+  beep(BUZZER, Bf5, 200);
+  beep(BUZZER, Bf6, 200);
 
-    beep(BUZZER, B5, 200);
-    beep(BUZZER, B6, 200);
-    beep(BUZZER, Bf5, 200);
-    beep(BUZZER, Bf6, 200);
+  beep(BUZZER, B5, 200);
+  beep(BUZZER, B6, 200);
+  beep(BUZZER, Bf5, 200);
+  beep(BUZZER, Bf6, 200);
 
-    beep(BUZZER, E6, 500);
-    beep(BUZZER, G6, 100);
-    beep(BUZZER, Af6, 100);
-    beep(BUZZER, Bf5, 100);
+  beep(BUZZER, E6, 500);
+  beep(BUZZER, G6, 100);
+  beep(BUZZER, Af6, 100);
+  beep(BUZZER, Bf5, 100);
 }
-
 
