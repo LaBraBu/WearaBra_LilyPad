@@ -1,5 +1,5 @@
 // Analog pin
-const int ACCELERATOR = 2;
+const int ACCELERATOR = 3;
 const int TOUCH       = 4;
 
 // Digital pin
@@ -144,7 +144,7 @@ void check_leaned() {
     }
   
     // 傾いた
-    if (zg < -0.4) {
+    if (zg < 0.5) {
       if (!is_leaned)
         result += 10;
       is_leaned = true;
