@@ -181,85 +181,94 @@ void check_hooked() {
 }
 
 void check_touched_debug() {
+  
+  // フックをつけてれば
+  if (is_hooked) {
 
-  if (!digitalRead(TOUCH2)) {
-
-    if (!is_touched1) {
-      result += 10;
-      is_touched1 = true;
-      soundCheckPoint();
-    }
-    else if (!is_touched2) {
-      result += 10;
-      is_touched2 = true;
-      soundCheckPoint();
-    }
-    else if (!is_touched3) {
-      result += 10;
-      is_touched3 = true;
-      soundCheckPoint();
-    }
-    else if (!is_touched4) {
-      result += 10;
-      is_touched4 = true;
-      soundCheckPoint();
+    if (!digitalRead(TOUCH2)) {
+  
+      if (!is_touched1) {
+        result += 10;
+        is_touched1 = true;
+        soundCheckPoint();
+      }
+      else if (!is_touched2) {
+        result += 10;
+        is_touched2 = true;
+        soundCheckPoint();
+      }
+      else if (!is_touched3) {
+        result += 10;
+        is_touched3 = true;
+        soundCheckPoint();
+      }
+      else if (!is_touched4) {
+        result += 10;
+        is_touched4 = true;
+        soundCheckPoint();
+      }
     }
   }
 }
 
 void check_touched() {
 
-  // タッチしてなければ
-  if (!is_touched1 || !is_touched2 || !is_touched3 || !is_touched4) {
+  
+  // フックをつけてれば
+  if (is_hooked) {
 
-    int touchValue = analogRead(TOUCH);
-    
-    if ((time % 5) == 0) {
-      Serial.print("touchValue = ");
-      Serial.println(touchValue);
-    }
-
-    // タッチした（抵抗３個）
-    if (230 <= touchValue && touchValue < 280) {
-
-      // タッチした（加点）
-      if (!is_touched1) {
-        result += 10;
-        is_touched1 = true;
-        soundCheckPoint();
+    // タッチしてなければ
+    if (!is_touched1 || !is_touched2 || !is_touched3 || !is_touched4) {
+  
+      int touchValue = analogRead(TOUCH);
+      
+      if ((time % 5) == 0) {
+        Serial.print("touchValue = ");
+        Serial.println(touchValue);
       }
-    }
-
-    // タッチした（抵抗２個）
-    else if (460 <= touchValue && touchValue < 500) {
-
-      // タッチした（加点）
-      if (!is_touched2) {
-        result += 10;
-        is_touched2 = true;
-        soundCheckPoint();
+  
+      // タッチした（抵抗３個）
+      if (230 <= touchValue && touchValue < 280) {
+  
+        // タッチした（加点）
+        if (!is_touched1) {
+          result += 10;
+          is_touched1 = true;
+          soundCheckPoint();
+        }
       }
-    }
-
-    // タッチした（抵抗１個）
-    else if (680 <= touchValue && touchValue < 720) {
-
-      // タッチした（加点）
-      if (!is_touched3) {
-        result += 10;
-        is_touched3 = true;
-        soundCheckPoint();
+  
+      // タッチした（抵抗２個）
+      else if (460 <= touchValue && touchValue < 500) {
+  
+        // タッチした（加点）
+        if (!is_touched2) {
+          result += 10;
+          is_touched2 = true;
+          soundCheckPoint();
+        }
       }
-    }
-
-    // タッチした（抵抗０個）
-    else if (950 <= touchValue) {
-
-      // タッチした（加点）
-      if (!is_touched4) {
-        result += 10;
-        is_touched4 = true;
-        soundCheckPoint();
+  
+      // タッチした（抵抗１個）
+      else if (680 <= touchValue && touchValue < 720) {
+  
+        // タッチした（加点）
+        if (!is_touched3) {
+          result += 10;
+          is_touched3 = true;
+          soundCheckPoint();
+        }
+      }
+  
+      // タッチした（抵抗０個）
+      else if (950 <= touchValue) {
+  
+        // タッチした（加点）
+        if (!is_touched4) {
+          result += 10;
+          is_touched4 = true;
+          soundCheckPoint();
+        }
       }
     }
   }
