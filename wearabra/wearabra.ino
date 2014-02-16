@@ -70,6 +70,8 @@ void setup() {
   pinMode(BUZZER, OUTPUT);
   pinMode(LED, OUTPUT);
 
+  soundCheckPoint();
+
   Serial.begin(9600);
 }
 
@@ -144,7 +146,7 @@ void check_leaned() {
     }
   
     // 傾いた
-    if (zg < 0.5) {
+    if (zg < 0.8) {
       if (!is_leaned)
         result += 10;
       is_leaned = true;
@@ -296,6 +298,13 @@ void debug() {
 // チェックポイントで鳴らす音楽
 void soundCheckPoint() {
   
+  if (result == 0) {
+    beep(mE6,  100);
+    beep(mG6,  100);
+    beep(mAf6, 100);
+    beep(mBf6, 100);
+    beep(mB6,  100);
+  }
   if (result == 10) {
     beep(mC7,  100);
     beep(mD7,  100);
