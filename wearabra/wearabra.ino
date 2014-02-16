@@ -23,7 +23,7 @@ boolean is_touched4 = false;
 boolean is_success  = false;
 
 int result = 0;
-float time = 0;
+int time = 0;
 
 // for buzzer
 long t1, t2, t3, ta, tb;
@@ -82,8 +82,10 @@ void loop() {
 
   check_touched();
 
+  flash_led();
+
   // タイムアップ
-  if (!is_success && 60 == time) {
+  if (!is_success && 600 == time) {
     soundFailure();
   } 
   // 本番用
@@ -101,8 +103,8 @@ void loop() {
 
   debug();
 
-  delay(500);
-  time += 0.5;
+  delay(100);
+  time += 1;
 }
 
 /**
@@ -136,17 +138,23 @@ void check_leaned() {
     float zv = z - VD / 2.0;
     float zg = zv / (0.3 * VD / 3.0);
     
-    Serial.print("zg = ");
-    Serial.println(zg);
+    if ((time % 5) == 0) {
+      Serial.print("zg = ");
+      Serial.println(zg);
+    }
   
     // 傾いた
     if (zg < -0.4) {
+      if (!is_leaned)
+        result += 10;
       is_leaned = true;
-      digitalWrite(LED, HIGH);  // 点灯
+      //digitalWrite(LED, HIGH);  // 点灯
     } 
     else {
+      if (is_leaned)
+        result -= 10;
       is_leaned = false;
-      digitalWrite(LED, LOW);  // 消灯
+      //digitalWrite(LED, LOW);  // 消灯
     }
   }
 }
@@ -159,7 +167,6 @@ void check_hooked() {
   
       // 傾いていた
       if (is_leaned) {
-        result += 10;
         soundCheckPoint();
       }
       
@@ -205,8 +212,10 @@ void check_touched() {
 
     int touchValue = analogRead(TOUCH);
     
-    Serial.print("touchValue = ");
-    Serial.println(touchValue);
+    if ((time % 5) == 0) {
+      Serial.print("touchValue = ");
+      Serial.println(touchValue);
+    }
 
     // タッチした（抵抗３個）
     if (230 <= touchValue && touchValue < 280) {
@@ -254,25 +263,34 @@ void check_touched() {
   }
 }
 
+void flash_led() {
+  if (time % 6 * 10 < result)
+    digitalWrite(LED, HIGH);  // 点灯
+  else
+    digitalWrite(LED, LOW);  // 消灯
+}
+
 void debug() {
 
-  Serial.print("time: ");
-  Serial.print(time);
-  Serial.print(", ");
-  Serial.print("leaned: ");
-  Serial.print(is_leaned);
-  Serial.print(", ");
-  Serial.print("hooked: ");
-  Serial.print(is_hooked);
-  Serial.print(", ");
-  Serial.print("touched: ");
-  Serial.print(is_touched1);
-  Serial.print(is_touched2);
-  Serial.print(is_touched3);
-  Serial.print(is_touched4);
-  Serial.print(", ");
-  Serial.print("result: ");
-  Serial.println(result);
+  if ((time % 5) == 0) {
+    Serial.print("time: ");
+    Serial.print((float)time/10);
+    Serial.print(", ");
+    Serial.print("leaned: ");
+    Serial.print(is_leaned);
+    Serial.print(", ");
+    Serial.print("hooked: ");
+    Serial.print(is_hooked);
+    Serial.print(", ");
+    Serial.print("touched: ");
+    Serial.print(is_touched1);
+    Serial.print(is_touched2);
+    Serial.print(is_touched3);
+    Serial.print(is_touched4);
+    Serial.print(", ");
+    Serial.print("result: ");
+    Serial.println(result);
+  }
 }
 
 // チェックポイントで鳴らす音楽
