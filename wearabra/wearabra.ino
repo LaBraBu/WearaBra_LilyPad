@@ -91,7 +91,7 @@ void loop() {
     soundFailure();
   } 
   // 本番用
-  else if (!is_success && is_leaned && is_hooked && is_touched1 && is_touched2 && is_touched3 && is_touched4) {
+  else if (!is_success && is_leaned && is_hooked && is_touched2 && is_touched3 && is_touched4) {
     soundSuccess();
     soundSuccess();
     is_success = true;
@@ -187,12 +187,13 @@ void check_touched_debug() {
 
     if (!digitalRead(TOUCH2)) {
   
-      if (!is_touched1) {
-        result += 10;
-        is_touched1 = true;
-        soundCheckPoint();
-      }
-      else if (!is_touched2) {
+//      if (!is_touched1) {
+//        result += 10;
+//        is_touched1 = true;
+//        soundCheckPoint();
+//      }
+//      else
+      if (!is_touched2) {
         result += 10;
         is_touched2 = true;
         soundCheckPoint();
@@ -323,19 +324,23 @@ void soundCheckPoint() {
     beep(mEf7, 200);
     beep(mFs7, 100);
     beep(mA7,  100);
+    delay(500);
   }
 
   if (result == 30) {
     beep(mC8,  100);
     beep(mE8,  100);
+    delay(500);
   }
   if (result == 40) {
     beep(mFs8, 100);
     beep(mA8,  100);
+    delay(500);
   }
   if (result == 50) {
     beep(mC9,  100);
     beep(mF9,  100);
+    delay(500);
   }
   if (result == 60) {
     beep(mG9,  100);
