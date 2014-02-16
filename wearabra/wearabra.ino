@@ -85,7 +85,7 @@ void loop() {
   flash_led();
 
   // タイムアップ
-  if (!is_success && 600 == time) {
+  if (!is_success && 450 == time) {
     soundFailure();
   } 
   // 本番用
