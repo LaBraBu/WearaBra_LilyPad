@@ -25,6 +25,16 @@ boolean is_success  = false;
 int result = 0;
 int time = 0;
 
+// touch value
+int touch1_low  = 230;
+int touch1_high = 280;
+int touch2_low  = 460;
+int touch2_high = 500;
+int touch3_low  = 660;
+int touch3_high = 700;
+int touch4_low  = 950;
+
+
 // for buzzer
 long t1, t2, t3, ta, tb;
 
@@ -229,7 +239,7 @@ void check_touched() {
       }
   
       // タッチした（抵抗３個）
-      if (230 <= touchValue && touchValue < 280) {
+      if (touch1_low <= touchValue && touchValue < touch1_high) {
   
         // タッチした（加点）
         if (!is_touched1) {
@@ -240,7 +250,7 @@ void check_touched() {
       }
   
       // タッチした（抵抗２個）
-      else if (460 <= touchValue && touchValue < 500) {
+      else if (touch2_low <= touchValue && touchValue < touch2_high) {
   
         // タッチした（加点）
         if (!is_touched2) {
@@ -251,7 +261,7 @@ void check_touched() {
       }
   
       // タッチした（抵抗１個）
-      else if (680 <= touchValue && touchValue < 720) {
+      else if (touch3_low <= touchValue && touchValue < touch3_high) {
   
         // タッチした（加点）
         if (!is_touched3) {
@@ -262,7 +272,7 @@ void check_touched() {
       }
   
       // タッチした（抵抗０個）
-      else if (950 <= touchValue) {
+      else if (touch4_low <= touchValue) {
   
         // タッチした（加点）
         if (!is_touched4) {
