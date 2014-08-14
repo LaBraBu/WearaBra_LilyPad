@@ -26,12 +26,12 @@ int result = 0;
 int time = 0;
 
 // touch value
-int touch1_low  = 230;
-int touch1_high = 280;
+int touch1_low  = 220;
+int touch1_high = 300;
 int touch2_low  = 460;
-int touch2_high = 500;
-int touch3_low  = 660;
-int touch3_high = 700;
+int touch2_high = 550;
+int touch3_low  = 630;
+int touch3_high = 750;
 int touch4_low  = 950;
 
 
